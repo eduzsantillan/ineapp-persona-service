@@ -1,8 +1,8 @@
-package pe.ineapp.ineapppersonaservice.Person;
+package pe.ineapp.ineapppersonaservice.Person.infrastructure;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pe.ineapp.ineapppersonaservice.Person.domain.Person;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -52,6 +52,18 @@ public class PersonController {
 
     //POST
 
+    @PostMapping
+    @RequestMapping("/addperson")
+    public Person addPerson(@RequestBody Person person){
+
+        LocalDate date = LocalDate.of(1992, Month.SEPTEMBER, 5);
+
+        Person person = Person.builder()
+                .id(1L)
+                .name("Eduardo")
+                .lastName("Zuniga")
+                .dni("73267572")
+                .email("
 
 
     //DELETE
