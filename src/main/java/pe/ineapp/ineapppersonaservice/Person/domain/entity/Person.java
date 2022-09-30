@@ -1,4 +1,4 @@
-package pe.ineapp.ineapppersonaservice.Person;
+package pe.ineapp.ineapppersonaservice.Person.domain.entity;
 
 
 import lombok.*;
@@ -16,6 +16,8 @@ import java.time.LocalDate;
 )
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Person {
 
     @SequenceGenerator(
@@ -34,4 +36,5 @@ public class Person {
     String dni;
     String email;
     LocalDate birthDate;
+
 }
