@@ -9,6 +9,7 @@ import pe.ineapp.ineapppersonaservice.Person.infrastructure.request.UserRequest;
 import pe.ineapp.ineapppersonaservice.Person.infrastructure.response.BasicResponse;
 import pe.ineapp.ineapppersonaservice.Person.infrastructure.response.UserResponse;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Log4j2
@@ -25,7 +26,6 @@ public class PersonServiceImpl implements PersonService{
     public BasicResponse addUser(UserRequest request) {
 
         try{
-
             if(request.getPassword().equals(PASSWORD)){
                 personRepository.save(this.buildPersonFromRequest(request));
                 return BasicResponse.whenSuccess();
@@ -45,7 +45,7 @@ public class PersonServiceImpl implements PersonService{
         if(personList.isEmpty()) {
             return UserResponse.builder()
                     .personList(null)
-                    .basicResponse(BasicResponse.whenNoDataFound())
+                    .basicResponse(BasicResponse.whenNoDataFound("User"))
                     .build();
         }
 
@@ -55,6 +55,75 @@ public class PersonServiceImpl implements PersonService{
                 .build();
     }
 
+    @Override
+    public UserResponse getByDni(String dni){
+
+        try{
+            Person person = personRepository.findByDni(dni);
+
+            if(person != null){
+                return UserResponse.builder()
+                        .personList(List.of(person))
+                        .basicResponse(BasicResponse.whenSuccess())
+                        .build();
+            }else{
+                return UserResponse.builder()
+                        .personList(null)
+                        .basicResponse(BasicResponse.whenNoDataFound("User"))
+                        .build();
+            }
+        }catch(Exception e){
+            return UserResponse.builder()
+                    .personList(null)
+                    .basicResponse(BasicResponse.whenError(e.getMessage()))
+                    .build();
+        }
+
+    }
+
+    @Transactional
+    @Override
+    public BasicResponse updateUser(UserRequest request ,String dni){
+        try{
+            //Validar que exista el usuario que se desea modificar
+            Person person = personRepository.findByDni(dni);
+
+            if(person == null){
+                return BasicResponse.whenNoDataFound("User con dni "+dni);
+            }else{
+                //Validar que la clave sea correcta
+                if(request.getPassword().equals(PASSWORD)){
+
+                    person.setName(request.getName()!=null && !request.getName().isBlank() ? request.getName() : person.getName());
+                    person.setLastName(request.getLastName()!=null && !request.getLastName().isBlank() ? request.getLastName() : person.getLastName());
+                    person.setEmail(request.getEmail()!=null && !request.getEmail().isBlank() ? request.getEmail() : person.getEmail());
+                    person.setBirthDate(request.getBirthDate()!=null ? request.getBirthDate() : person.getBirthDate());
+                    person.setDni(request.getDni()!=null && !request.getDni().isBlank() ? request.getDni() : person.getDni());
+
+                    return BasicResponse.whenSuccess();
+                }else{
+                    return BasicResponse.whenPassNotMatch();
+                }
+            }
+        }catch (Exception e){
+            return BasicResponse.whenError(e.getMessage());
+        }
+    }
+
+    public BasicResponse deleteUser(String dni){
+        try{
+            Person person = personRepository.findByDni(dni);
+
+            if(person == null){
+                return BasicResponse.whenNoDataFound("User con dni "+dni);
+            }else{
+                personRepository.delete(person);
+                return BasicResponse.whenSuccess();
+            }
+        }catch (Exception e){
+            return BasicResponse.whenError(e.getMessage());
+        }
+    }
 
     public Person buildPersonFromRequest(UserRequest request){
 

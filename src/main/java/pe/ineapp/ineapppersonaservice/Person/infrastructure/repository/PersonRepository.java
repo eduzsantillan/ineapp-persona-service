@@ -5,5 +5,7 @@ import pe.ineapp.ineapppersonaservice.Person.domain.entity.Person;
 
 public interface PersonRepository extends JpaRepository<Person,Long> {
 
+    public Person findByDni(String dni);
+
 
 }
