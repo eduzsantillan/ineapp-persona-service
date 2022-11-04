@@ -11,13 +11,11 @@ import pe.ineapp.ineapppersonaservice.Person.infrastructure.response.UserRespons
 
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping({"/ep","/index","person","/"})
 public class PersonController {
 
     @Autowired
     private PersonService personService;
-
-
 
     @GetMapping
     @RequestMapping("/getall")
@@ -27,14 +25,14 @@ public class PersonController {
 
     @GetMapping
     @RequestMapping("/getbydni")
-    public UserResponse getByDni(@RequestParam String dni){
+    public UserResponse getByDni(@RequestParam String dni) {
         return personService.getByDni(dni);
     }
 
 
     @PostMapping
     @RequestMapping("/adduser")
-    public ResponseEntity<BasicResponse> addUser(@RequestBody UserRequest request){
+    public ResponseEntity<BasicResponse> addUser(@RequestBody UserRequest request) {
         BasicResponse response = personService.addUser(request);
         return ResponseEntity.status(response.getCode()).body(response);
     }
@@ -43,7 +41,7 @@ public class PersonController {
     @PutMapping
     @RequestMapping("/updateuser")
     public ResponseEntity<BasicResponse> updateUser(@RequestBody UserRequest request,
-                                                    @RequestParam String dni){
+                                                    @RequestParam String dni) {
 
         BasicResponse response = personService.updateUser(request, dni);
         return ResponseEntity.status(response.getCode()).body(response);
@@ -52,10 +50,11 @@ public class PersonController {
 
     @DeleteMapping
     @RequestMapping("/deleteuser")
-    public ResponseEntity<BasicResponse> deleteUser(@RequestParam String dni){
+    public ResponseEntity<BasicResponse> deleteUser(@RequestParam String dni) {
         BasicResponse response = personService.deleteUser(dni);
         return ResponseEntity.status(response.getCode()).body(response);
     }
+
 
 
 

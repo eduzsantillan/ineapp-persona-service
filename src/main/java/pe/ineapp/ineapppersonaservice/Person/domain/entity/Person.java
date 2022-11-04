@@ -1,6 +1,7 @@
 package pe.ineapp.ineapppersonaservice.Person.domain.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,11 +31,19 @@ public class Person {
             generator = "person_sequence"
     )
     @Id
+    @JsonIgnore
     Long id;
+
+
     String name;
+
+
     String lastName;
+
     String dni;
+
     String email;
+
     LocalDate birthDate;
 
 

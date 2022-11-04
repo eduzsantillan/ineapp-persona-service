@@ -17,7 +17,7 @@ import java.util.List;
 public class PersonServiceImpl implements PersonService{
 
 
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "secreto";
 
     @Autowired
     private PersonRepository personRepository;

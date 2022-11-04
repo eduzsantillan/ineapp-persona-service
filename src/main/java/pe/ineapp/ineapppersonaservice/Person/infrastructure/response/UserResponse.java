@@ -14,7 +14,4 @@ public class UserResponse {
      private BasicResponse basicResponse;
 
 
-
-
-
 }
