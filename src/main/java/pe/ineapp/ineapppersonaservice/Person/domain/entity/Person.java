@@ -34,18 +34,11 @@ public class Person {
     @JsonIgnore
     Long id;
 
-
     String name;
-
-
     String lastName;
-
     String dni;
-
     String email;
-
     LocalDate birthDate;
-
 
 
 }
